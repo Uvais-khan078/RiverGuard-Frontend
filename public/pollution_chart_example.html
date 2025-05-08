@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>River Pollution Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #chart-container { width: 80%; margin: 20px auto; border: 1px solid #ccc; padding: 16px; }
+        #zone-indicator { margin-top: 8px; font-weight: bold; }
+        #river-select { margin-top: 12px; padding: 4px; }
+    </style>
+</head>
+<body>
+    <h1>River Pollution Levels Over Time</h1>
+
+    <div id="chart-container">
+        <canvas id="pollutionChart"></canvas>
+    </div>
+
+    <div id="zone-indicator" class="mt-2 font-bold"></div>
+
+    <label for="river-select">Select River:</label>
+    <select id="river-select">
+        <option value="Ganga">Ganga</option>
+        <option value="Yamuna">Yamuna</option>
+        <option value="Narmada">Narmada</option>
+    </select>
+
+    <script>
+        const pollutionData = {
+            rivers: [
+                { name: "Ganga", data: [{ year: 2020, level: 35 }, { year: 2021, level: 45 }, { year: 2022, level: 60 }, { year: 2023, level: 55 }, { year: 2024, level: 40 }, { year: 2025, level: 42 }] },
+                { name: "Yamuna", data: [{ year: 2020, level: 65 }, { year: 2021, level: 70 }, { year: 2022, level: 80 }, { year: 2023, level: 75 }, { year: 2024, level: 68 }, { year: 2025, level: 72 }] },
+                { name: "Narmada", data: [{ year: 2020, level: 20 }, { year: 2021, level: 25 }, { year: 2022, level: 30 }, { year: 2023, level: 28 }, { year: 2024, level: 22 }, { year: 2025, level: 26 }] }
+            ],
+            threshold: 50 // Example threshold for red zone
+        };
+
+        const chartCanvas = document.getElementById('pollutionChart');
+        const zoneIndicator = document.getElementById('zone-indicator');
+        const riverSelect = document.getElementById('river-select');
+        let currentChart;
+        let currentRiverName = riverSelect.value;
+
+        function updateChart(selectedRiver) {
+            const riverData = pollutionData.rivers.find(river => river.name === selectedRiver);
+
+            if (!riverData) {
+                console.error("River not found:", selectedRiver);
+                return;
+            }
+
+            const years = riverData.data.map(item => item.year);
+            const levels = riverData.data.map(item => item.level);
+
+            const isRedZone = levels[levels.length - 1] > pollutionData.threshold;
+            zoneIndicator.textContent = `Current Zone (${selectedRiver}): `;
+            zoneIndicator.classList.remove('text-green-600', 'text-red-600');
+            zoneIndicator.classList.add(isRedZone ? 'text-red-600' : 'text-green-600');
+            zoneIndicator.textContent += isRedZone ? 'Red Zone (Pollution Level High)' : 'Green Zone (Pollution Level Acceptable)';
+
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            currentChart = new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: `${selectedRiver} Pollution Level`,
+                        data: levels,
+                        borderColor: isRedZone ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)',
+                        backgroundColor: isRedZone ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 5,
+                        pointBackgroundColor: isRedZone ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Pollution Level (Arbitrary Units)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Pollution Trend for ${selectedRiver}`,
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        }
+
+        riverSelect.addEventListener('change', () => {
+            currentRiverName = riverSelect.value;
+            updateChart(currentRiverName);
+        });
+
+        // Initial chart display
+        updateChart(currentRiverName);
+
+        // Simulate live data update (for demonstration purposes)
+        setInterval(() => {
+            pollutionData.rivers.forEach(river => {
+                const change = (Math.random() - 0.5) * 10;
+                const lastDataPoint = river.data[river.data.length - 1];
+                const newLevel = Math.max(0, lastDataPoint.level + change);
+                const newYear = lastDataPoint.year + 1;
+                river.data.push({ year: newYear, level: newLevel });
+                river.data = river.data.slice(-6);
+            });
+            updateChart(currentRiverName);
+        }, 3000);
+    </script>
+</body>
+</html>
