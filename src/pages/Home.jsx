@@ -16,7 +16,7 @@ function Home() {
           <Link to="/login" className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">log-in</Link>
         </header>
         
-        <section className="relative flex h-[90vh] items-center justify-center  bg-[url(D:\RiverGuard\Frontend\bg-1.jpg)] bg-cover text-center">
+        <section className="relative flex h-[90vh] items-center justify-center bg-cover text-center" style={{ backgroundImage: "url('/bg-1.jpg')" }}>
          <div className="" >
           <div className="absolute inset-0"></div>
 
@@ -26,8 +26,7 @@ function Home() {
             <div className="space-x-4">
               <button className="rounded-full bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700">Get Started</button>
               <button className="rounded-full bg-white px-6 py-2 text-blue-600 transition hover:bg-blue-100">Live Demo</button>
-            </div>
-          </div></div>
+            </div></div></div>
         </section>
 
         <section id="features" className="bg-white px-8 py-16">
@@ -57,9 +56,9 @@ function Home() {
           </div>
         </section>
 
-        <section id="dashboard" class="py-16 px-8 bg-blue-50 text-center">
-      <h3 class="text-3xl font-semibold mb-6">Explore the Live Dashboard</h3>
-      <div class="border-2 border-dashed border-blue-300 p-10 rounded-xl bg-white max-w-4xl mx-auto">
+        <section id="dashboard" className="py-16 px-8 bg-blue-50 text-center">
+      <h3 className="text-3xl font-semibold mb-6">Explore the Live Dashboard</h3>
+      <div className="border-2 border-dashed border-blue-300 p-10 rounded-xl bg-white max-w-4xl mx-auto">
         <PollutionChart/>
       </div>
     </section>
