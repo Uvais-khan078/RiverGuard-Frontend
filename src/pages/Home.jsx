@@ -16,7 +16,7 @@ function Home() {
           <Link to="/login" className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">log-in</Link>
         </header>
         
-        <section className="relative flex h-[90vh] items-center justify-center bg-cover text-center" style={{ backgroundImage: "url('/bg-1.jpg')" }}>
+        <section className="relative flex h-[90vh] items-center justify-center bg-cover text-center bg-[url(https://media.discordapp.net/attachments/1352706628163473522/1369813876371095615/WhatsApp_Image_2025-05-08_at_04.36.06_f987d75e.jpg?ex=681d3a16&is=681be896&hm=76705447726032d0c0ec5e622ea339e87012378ef57b297764ccb61336684ffb&=&format=webp&width=1240&height=828)]">
          <div className="" >
           <div className="absolute inset-0"></div>
 
